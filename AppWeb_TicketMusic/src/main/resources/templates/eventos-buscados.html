@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Eventos buscados</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../css/estilos-publico.css" th:href="@{/css/estilos-publico.css}"/>
+    <style>
+      
+      main.evento .infoEvento img{
+          padding-top: 10px;
+        }
+     
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-publico::encabezado-publico}"></header>
+
+    <!-- Principal -->
+    <main class="container-fluid evento listado">
+    	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>       
+            
+      <h2 class="izquierda">Eventos disponibles</h2>
+
+        <div class="col-12" th:each="evento : ${eventos}">
+          <div class="col-10 d-flex flex-row">
+            <div class="col-1 text-center fechaEvento">
+                <p class="dia" th:text="${#temporals.format(evento.fecha, 'dd')}">09</p>
+                <p th:text="${#temporals.format(evento.fecha, 'MMM')}">mayo</p>  
+                <p th:text=${evento.hora}>22:00</p>
+            </div>
+            <div class="col-2">
+              
+              <img th:src="${not (#strings.isEmpty(evento.cartel))} ? @{{base}files/{id}(base=${base_image_path},id=${evento.cartel})} : 'https://image.freepik.com/foto-gratis/happy-people-dance-in-nightclub-party-concert_31965-114.jpg' " 
+                  class="img-responsive icono-categoria" th:alt-title="${evento.nombre}"/>
+            </div>
+            <div class="col-4">
+            
+              <p th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}" class="negrita nomArt">Nombre artista 1</p>
+              <p th:text="${evento.nombre}">Nombre evento</p>
+              <p><span th:text="${evento.recinto.nombre}">Recinto</span>,
+               <span th:text="${evento.recinto.ciudad.nombre}">Ciudad</span></p>
+            </div>
+            <div class="col-3 text-center comprar">
+                <a href="/eventos/entradas" th:href="@{/eventos/entradas/{id}(id=${evento.id})}" class="btn btn-primary">Comprar Entradas</a>
+            </div>
+          </div>
+  
+          
+         
+  
+        </div>
+      
+      </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+  </body>
+</html>

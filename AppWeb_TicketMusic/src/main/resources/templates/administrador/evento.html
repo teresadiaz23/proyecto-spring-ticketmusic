@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Administrar Eventos</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <script src="../../static/js/codigoBorrar.js" th:src="@{/js/codigoBorrar.js}"></script>
+    <style>
+        
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-admin::encabezado-admin}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+      <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+      <div class="d-flex flex-column col-12">
+          <div class="col-12">
+              <h3 class="text-center display-4">Gestión Eventos</h3>
+          </div>
+          <div class="col-12">
+              
+            <button type="button" class="btn btn-success border-0 float-right ml-2" data-toggle="modal" data-target="#addConcert">
+                <i class="fas fa-plus-circle"></i><span th:text="${evento.id} ? ' Editar ' : ' Añadir '"></span>
+                <span th:text="${evento.getTipo()== 'Concierto'} ? 'concierto' : 'festival' ">concierto</span>
+            </button>
+            <button type="button" class="btn btn-success border-0 float-right fest" data-toggle="modal" data-target="#addFestival">
+                <i class="fas fa-plus-circle"></i> Añadir festival
+            </button>
+            
+            <!-- The Modal -->
+            <div class="modal" id="addConcert">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+            
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">
+									<span th:text="${evento.id} ? 'Editar' : 'Nuevo'"></span>
+								
+							<span th:text="${evento.getTipo()== 'Concierto'} ? 'Concierto' : 'Festival' ">
+							Concierto</span></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+            
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form name="registro" class="align-items-center" id="agregarE" action="#"
+                        method="POST" enctype="multipart/form-data" th:action="${evento.id != 0} ? (${evento.getTipo()=='Concierto'} ? @{/admin/evento/concierto/editar/submit} : @{/admin/evento/festival/editar/submit}) : @{/admin/evento/concierto/submit}"
+                         th:object="${evento}">
+                        	 
+							<input type="hidden" th:field="*{id}" id="id" />
+                            <div class="form-row">   
+                                <div class="form-group col-3">
+                                    <label for="nombre" class="negrita">Nombre Evento</label>
+                                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="" id="nombre">
+                                </div>
+                                
+                                <div class="form-group col-3">
+                                    <label for="recinto" class="negrita">Artista</label>
+                                    <select id="recinto" class="form-control" th:field="*{artistas}">
+										<option value="">Artista</option>
+										<option th:each="artista : ${artistas}" th:value="${artista.id}" th:text="${artista.nombre}">N/S</option>
+									</select>	
+                                </div>
+                               
+                                <div class="form-group col-3">
+                                    <label for="recinto" class="negrita">Recinto</label>
+                                    <select id="recinto" class="form-control" th:field="*{recinto}">
+										<option value="">Recinto</option>
+										<option th:each="recinto : ${recintos}" th:value="${recinto.id}" th:text="${recinto.nombre}">N/S</option>
+									</select>	
+                                </div>
+                                
+                                <div class="form-group col-3" th:if="${evento.getTipo()== 'Concierto'}">
+                                  <label for="genero" class="negrita">Género</label>
+                                  <select name="genero" th:field="*{genero}" class="form-control">
+                                    	<option value="">Género</option>
+                                        <option value="Pop">Pop</option>
+                                        <option value="Rock">Rock</option>
+                                        <option value="Reggaeton">Reggaeton</option>
+                                        <option value="Latino">Latino</option>
+                                        <option value="Indie /Alternativo">Indie /Alternativo</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-3">
+                                    <label for="nacimiento" class="negrita">Fecha</label>
+                                    <input type="date" th:field="*{fecha}" class="form-control" placeholder="" id="nacimiento">
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="hora" class="negrita">Hora</label>
+                                    <input type="time" th:field="*{hora}" class="form-control" placeholder="" id="hora">
+                                </div>
+                                <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada General</label>
+					                <input type="number" th:name="precio1" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+					            <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada VIP</label>
+					                <input type="number" th:name="precio2" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+					            <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada Premium</label>
+					                <input type="number" th:name="precio3" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+                            
+                                <div class="form-group col-7">
+                                  <label for="cartel" class="negrita">Cartel</label>
+                                  <input type="file" name="file" class="form-control form-control-file" id="cartel">
+                                </div>
+                                
+                            </div>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="button" class="btn btn-warning">Limpiar</button>
+                        </form>
+                    </div>
+            
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+<!--             The Modal -->
+            <div class="modal" id="addFestival">
+                <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+            
+<!--                     Modal Header -->
+                    <div class="modal-header">
+                    <h4 class="modal-title">Añadir Festival</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+            
+<!--                     Modal body -->
+                    <div class="modal-body">
+                        <form name="registro" class="align-items-center" id="agregarE" action="#"
+                        method="POST" enctype="multipart/form-data" th:action="${festival.id != 0} ? @{/admin/evento/festival/editar/submit} : @{/admin/evento/festival/submit}" th:object="${festival}">
+                        	<h1>
+									<span th:text="${festival.id} ? 'Editar' : 'Nuevo'"></span>
+								festival
+							</h1> 
+							<input type="hidden" th:field="*{id}" id="id" />
+                            <div class="form-row">   
+                                <div class="form-group col-3">
+                                    <label for="nombre" class="negrita">Nombre Evento</label>
+                                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="" id="nombre">
+                                </div>
+                                
+                                 <div class="form-group col-3">
+                                    <label for="recinto" class="negrita">Artista</label>
+                                    <select id="recinto" class="form-control" th:field="*{artistas}">
+										<option value="">Artista</option>
+										<option th:each="artista : ${artistas}" th:value="${artista.id}" th:text="${artista.nombre}">N/S</option>
+									</select>	
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="recinto" class="negrita">Recinto</label>
+                                    <select id="recinto" class="form-control" th:field="*{recinto}">
+										<option value="">Recinto</option>
+										<option th:each="recinto : ${recintos}" th:value="${recinto.id}" th:text="${recinto.nombre}">N/S</option>
+									</select>	
+                                </div>
+                                
+                                <div class="form-group col-3">
+                                    <label for="nacimiento" class="negrita">Fecha</label>
+                                    <input type="date" th:field="*{fecha}" class="form-control" placeholder="" id="nacimiento">
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="hora" class="negrita">Hora</label>
+                                    <input type="time" th:field="*{hora}" class="form-control" placeholder="" id="hora">
+                                </div>
+                                <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada General</label>
+					                <input type="number" th:name="precio1" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+					            <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada VIP</label>
+					                <input type="number" th:name="precio2" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+					            <div class=" form-group col-3" th:if="${evento.id == 0}">
+					                <label for="precio" class="negrita">Precio Entrada Premium</label>
+					                <input type="number" th:name="precio3" class="form-control" placeholder="1.0" min='1'  id="precio"></input>
+					            </div>
+                            
+                                <div class="form-group col-7">
+                                  <label for="cartel" class="negrita">Cartel</label>
+                                  <input type="file" name="file" class="form-control form-control-file" id="cartel">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="button" class="btn btn-warning">Limpiar</button>
+                        </form>
+                    </div>
+            
+<!--                     Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <form class="navbar-form w-25 mb-2">
+                  <input type="text" class="form-control" placeholder="Buscar..."
+                    name="q" th:value="${param.q}">
+            </form>
+                <table class="table table-striped" summary="Tabla que muestra los eventos guardados en la aplicación">
+                    <caption></caption>
+                    <thead>
+                    <tr>
+<!--                         <th scope="col">Id</th> -->
+                        <th scope="col">Cartel</th>
+                        <th scope="col">Nombre Evento</th>
+                        <th scope="col">Artista</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col">Recinto</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Género</th>
+<!--                         <th scope="col">Entradas</th> -->
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Borrar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="evento : ${eventos}">
+<!--                         <th scope="row" th:text="${evento.id}">1</th> -->
+
+                       <td class="cartel"><img th:src="${not (#strings.isEmpty(evento.cartel))} 
+							              ? @{{base}/{id}(base=${base_image_path},id=${evento.cartel})} : 'http://placehold.it/80x50' " 
+								class="img-responsive icono-categoria w-100" alt="imagen evento"/></td>
+
+                        <td th:text="${evento.nombre}">Nombre</td>
+                      
+                        <td th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}">Artista</td>
+                        <td th:text="${evento.recinto.ciudad.nombre}">Ciudad</td>
+                        <td th:text="${evento.recinto.nombre}">Recinto</td>
+                        <td th:text="${evento.getTipo()}">Tipo</td>
+                        <td th:text="${evento.getTipo() == 'Concierto'} ? ${evento.genero} : 'N/A'">Género</td>
+                        <td th:text="${#temporals.format(evento.fecha, 'dd/MM/yyyy')}">Fecha</td>
+                        <td th:text="${evento.hora}">Hora</td>
+
+	                    <td><a class="btn btn-outline-warning border-0 editar" id="editar" 
+	                      th:href="${evento.getTipo()=='Concierto'}? @{/admin/evento/concierto/editar/{id}(id=${evento.id})} :
+	                       @{/admin/evento/festival/editar/{id}(id=${evento.id})}" ><i class="fas fa-edit"></i></a></td>
+                      				
+            <!--           <td><a href="#" class="btn btn-outline-danger border-0" th:href="@{/admin/evento/borrar/{id}(id=${evento.id})}">
+                        <i class="fas fa-trash-alt"></i></a></td> -->
+                      <td><a href="#" class="btn btn-outline-danger border-0" data-toggle="modal"
+                      data-target="#delete-modal" th:data-id="${evento.id}"><i class="fas fa-trash-alt"></i></a></td>  
+                    </tr>
+                    
+                    
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+
+          </div>
+ 
+      </div>
+      <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Borrar evento</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está usted seguro de borrar este evento?</p>
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a href="/admin/evento/borrar/" class="btn btn-danger">Sí</a>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+        
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+  </body>
+</html>

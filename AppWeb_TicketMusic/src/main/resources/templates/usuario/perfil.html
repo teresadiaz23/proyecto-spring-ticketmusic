@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Mi Cuenta Mi Perfil</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+<!--     <script src="../../static/js/codigoPerfil.js" th:src="@{/js/codigoPerfil.js}"></script> -->
+    <style>
+        
+      main h3{
+        margin-left: 60px;
+        margin-top: 0px;
+        margin-bottom: 10px; 
+      }
+      
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-user::encabezado-user}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid pagUsuario">
+    	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+        <div class="row user">
+          <aside class="col-5" th:replace="~{fragmentos/encabezado-user::menu-lateral}">
+          </aside>
+      
+            <section class="col-7">
+                <div class="col-12">
+                    <h2 class="font-weight-bold">Editar perfil</h2>
+                    <h4 class="font-weight-bold">Editar datos personales</h4>
+                    <form name="datos" class="align-items-center" id="datos" action="#" 
+                    th:action="@{/user/submit}" th:object="${usuario}">
+                    <input type="hidden" th:field="*{id}" id="id" />
+                        <div class="form-row">
+                            <div class="form-group col-5">
+                                <label for="nombre" class="negrita">Nombre</label>
+                                <input type="text" th:field="*{nombre}" class="form-control" placeholder="" id="nombre">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="apellido" class="negrita">Apellidos</label>
+                                <input type="text" th:field="*{apellidos}" class="form-control" placeholder="" id="apellido">
+                            </div>
+                            <div class="form-group col-5">
+                                <label for="nacimiento" class="negrita">Fecha Nacimiento</label>
+                                <input type="date" th:field="*{fechaNacimiento}" class="form-control" placeholder="" id="nacimiento">
+                            </div>
+                        
+                            <div class="form-group col-5">
+                                <label for="localidad" class="negrita">Localidad</label>
+                                <input type="text" th:field="*{localidad}" class="form-control" placeholder="" id="localidad">
+                            </div>
+                            <input type="hidden" th:field="*{email}" class="form-control">
+                            <input type="hidden" th:field="*{password}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success">Enviar</button>
+                 </form>   
+				<form name="cambioEmail" class="align-items-center" id="cambioEmail" action="#" 
+                    th:action="@{/user/email/submit}" th:object="${usuario}">
+                    <h4 class="font-weight-bold">Editar email</h4>
+                    <p>Correo electrónico actual <span th:text="${usuario.email}">miemail@gmail.com</span></p>
+<!--                     	<input type="hidden" th:field="*{nombre}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{apellidos}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{fechaNacimiento}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{localidad}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{password}" class="form-control"> -->
+                        <div class="form-group col-6">
+                            <label for="email" class="negrita">Nuevo email</label>
+                            <input type="email" th:field="*{email}" class="form-control" placeholder="" id="email1">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="email" class="negrita">Confirmar email</label>
+                            <input type="email" class="form-control" placeholder="" id="email2">
+                        </div>
+                        <div class="alert alert-danger error1 w-50" role="alert">Los emails no coinciden</div>
+
+                        <button type="submit" class="btn btn-success submit" disabled>Enviar</button>
+                    
+					</form>
+					<form name="cambioPassword" class="align-items-center" id="cambioPassword" action="#" 
+                    th:action="@{/user/password/submit}" th:object="${usuario}">
+                    <h4 class="font-weight-bold">Editar contraseña</h4>
+                    
+                        <!-- <div class="form-group col-6">
+                            <label for="pwd" class="negrita">Contraseña actual</label>
+                            <input type="password" class="form-control" placeholder="" id="pwd1">
+                        </div> -->
+                        
+                        <div class="form-group col-6">
+                            <label for="pwd" class="negrita">Nueva contraseña</label>
+                            <input type="password" th:field="*{password}" class="form-control" placeholder="" id="pwd2">
+                        </div>
+                        <div class="form-group col-6">
+                            <label for="pwd" class="negrita">Confirmar nueva contraseña</label>
+                            <input type="password" class="form-control" placeholder="" id="pwd3">
+                        </div>
+                        <div class="alert alert-danger error2 w-50" role="alert">Las contraseñas no coinciden</div>
+<!--                         <input type="hidden" th:field="*{nombre}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{apellidos}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{fechaNacimiento}" class="form-control"> -->
+<!--                     	<input type="hidden" th:field="*{localidad}" class="form-control"> -->
+                    	
+                        <button type="submit" class="btn btn-success submit" disabled>Enviar</button>
+                    </form>
+                        
+                    
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    
+    <script>
+
+        function checkEmail() {
+          var email1 = document.getElementById("email1");
+          var email2 = document.getElementById("email2");
+
+
+          if(email1.value !== email2.value){
+            $(".error1").show();
+            return false;
+          }
+          else{
+            $(".error1").hide();
+            return true;
+          }
+          //return $(idInput1).val().match(pattern) ? true : false;
+        }
+
+        /*function checkPasswordAntigua(){
+          var password = /*[[${usuario.password}]]*//* 'default';
+          var pwd1 = $("#pwd1").val();
+          var hash = CryptoJS.SHA1("admin");
+          if(password !== hash){
+            $(".error3").show();
+            return false;
+          }
+          else{
+            $(".error3").hide();
+            return true;
+          }
+
+        }*/
+
+        function checkPassword() {
+          var pwd2 = document.getElementById("pwd2");
+          var pwd3 = document.getElementById("pwd3");
+
+
+          if(pwd2.value !== pwd3.value){
+            $(".error2").show();
+            return false;
+          }
+          else{
+            $(".error2").hide();
+            return true;
+          }
+          //return $(idInput1).val().match(pattern) ? true : false;
+        }
+
+        function enableSubmit (idForm) {
+          $(idForm + " button.submit").removeAttr("disabled");
+        }
+      
+        function disableSubmit (idForm) {
+          $(idForm + " button.submit").attr("disabled", "disabled");
+        }
+
+        function checkFormEmail (idForm) {
+          $(idForm + " *").on("change keydown", function() {
+            if (checkEmail()){
+              enableSubmit(idForm);
+            } 
+            else {
+              disableSubmit(idForm);
+            }
+          });
+        }
+
+        function checkFormPassword (idForm) {
+          $(idForm + " *").on("change keydown", function() {
+            if (checkPassword()){
+              enableSubmit(idForm);
+            } 
+            else {
+              disableSubmit(idForm);
+            }
+          });
+        }
+
+        $(function() {
+          $(".error1").hide();
+          $(".error2").hide();
+          checkFormEmail("#cambioEmail");
+          checkFormPassword("#cambioPassword");
+
+        });
+      
+    </script>
+  </body>
+</html>

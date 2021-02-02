@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - PDF Entrada</title>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+	<link rel="stylesheet" type="text/css" href="../static/css/estilos-publico.css" th:href="@{/css/estilos-publico.css}"/>
+	<style>
+
+		body{
+			background-color: white;
+		}
+		.principal{
+			width: 680px;
+			float:left;
+			border: 2px solid black;
+			
+			
+		
+		}
+		
+		h1{
+			padding-left: 10px;
+			border-bottom: 2px solid black;
+		}
+		
+		.datos{
+			width: 40%;
+			
+			float: left;
+			
+		}
+		.datos p{
+			padding-left: 10px;
+			
+		}
+		
+		.imagen{
+			width: 60%;
+			
+			float: left;
+			
+		}
+		.imagen img{
+			width: 90%;
+			padding-top: 10px;
+		}
+		#entrada{
+			width: 90%;
+			margin-top: 40px;
+			background-color: grey;
+			color: white;
+		}
+
+		#logo{
+            width: 50px;
+            float: left;
+            margin-left: 60px;
+            margin-bottom: 30px;
+        }
+        #logo img{
+        	width: 100%;
+        }
+		
+		#footer{
+			position: fixed;
+	  		bottom: 0px;
+	  		left: 30%;
+	  			
+		}
+		
+		
+	</style>
+</head>
+<body>
+	<div class="principal">
+		<h1 class="negrita"><span th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}">Nombre artista 1</span>:
+                  <span th:text="${evento.nombre}"> evento</span> </h1>
+			<div class="contenedor">
+
+			
+	     	<div class="datos">
+	     	<p><span class="negrita">Fecha: </span> <span th:text="${#temporals.dayOfWeekName(evento.fecha)}">lunes</span>, 
+		         <span th:text="${#temporals.format(evento.fecha, 'dd/MMM/yy')}">mayo</span></p>
+	             <p><span class="negrita">Hora: </span><span th:text=${evento.hora}>Hora evento</span></p>            
+	          <p><span class="negrita">Lugar: </span><span th:text="${evento.recinto.nombre}">Recinto</span>,
+				<span th:text="${evento.recinto.ciudad.nombre}">Ciudad</span></p>
+				<p class="negrita" id="entrada">Entrada número: <span th:text="${entrada.id}">1</span></p>
+				<p><span th:text="${entrada.nombre}">Nombre</span>
+					<span th:text=${#numbers.formatCurrency(entrada.precio)}>50€</span></p>
+
+				
+				
+	             
+	   		</div>
+	   		<div class="imagen">
+			   
+				<img th:src="${not (#strings.isEmpty(evento.cartel))} ? @{{base}/files/{id}(base=${base_image_path},id=${evento.cartel})} : 'https://image.freepik.com/foto-gratis/happy-people-dance-in-nightclub-party-concert_31965-114.jpg' " 
+ 									class="img-responsive icono-categoria w-25" th:alt-title="${evento.nombre}"/>
+		   </div>
+		   <div id="logo">
+				<img th:src="@{/img/logo2.png}" alt="Logo" />
+			</div>
+		</div>
+			
+	</div>
+	
+	
+	
+	<!-- Pie -->
+	<div id="footer" class="tabla-pie">	
+		<p class="negrita">Copyright &copy;  2020 Ticket Music</p>
+	</div>
+
+
+
+	
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Inicia sesión en Ticket Music para poder acceder a la zona privada"
+    />
+    <title>Inicio Sesión - Inicia sesión en TicketMusic</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    
+    
+    <link rel="stylesheet" href="../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <style>
+        body{
+            background-image: url('../img/banner2.jpg');
+            background-size: cover;
+            color: white;
+            
+        }
+        header h1{
+            padding-top: 50px;
+            margin-right: 20px;
+            color: black;
+        }
+        .container{
+            margin-left: 20px;
+            
+        }
+        main{
+            margin-top: 50px;
+            
+        }
+        main h2{
+            margin-bottom: 30px;
+        }
+        label{
+            font-size: 14pt;
+        }
+        #email, #pwd, #nombre, #apellido, #localidad, #nacimiento, #pwd2, #email2, #pwd3, #pwd4 {
+            background-color: #70c1b3;
+            color: black;
+            border: 1px solid #70c1b3;
+        }
+
+        .con{
+            background-color: #70c1b3;
+            border: 1px solid #70c1b3;
+            border-radius: .25rem;
+		}
+
+        #nacimiento{
+            width: 180px;
+        }
+        main a{
+            font-size: 14pt;
+            
+        }
+        #inicioSesion, #registro{
+            margin: auto;
+            width: 400px;
+        }
+        
+        #pwd{
+            width: 90%;
+        }
+        span{
+            margin-top: 15px;
+            font-size: 14pt;
+            width: 10%;
+		}
+        
+    </style>
+  </head>
+  <body>
+    <header>
+        <div class="container d-flex flex-column banner">
+            <a href="/" th:href="@{/}"><h2 class="text-info">TicketMusic</h2></a>
+        </div>
+    </header>
+    
+    <!-- Principal -->
+    <main class="container-fluid">
+        <section class="entrar">
+            <h2 class="centrado">Iniciar Sesión</h2>
+            <form name="inicioSesion" id="inicioSesion" method="POST" action="#" th:action="@{/login}">
+                <div class="form-group">
+                    <label for="email" class="negrita">Email/Usuario</label>
+                    <input type="text" class="form-control" placeholder="Introduce tu email" id="email" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="pwd" class="negrita">Contraseña</label>
+                    <div class="d-flex flex-row con">
+                        <input type="password" class="form-control" placeholder="Introduce tu contraseña" id="pwd" name="password">
+                        <span class="fas fa-eye ojo"></span>
+                    </div>
+
+                </div>
+                
+                
+                  
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+            <div class="centrado">
+                <p>¿No tienes cuenta?</p>
+                <a href="#">Regístrate</a>
+            </div>
+        </section>
+        <section class="registrar">
+            <h2 class="centrado">Crear una cuenta</h2>
+            <form name="registro" id="registro" action="#" method="POST" 
+                            th:action="@{/registro/submit}" th:object="${usuario}">
+                <input type="hidden" th:field="*{id}" id="id" />
+                <div class="form-group">
+                    <label for="nombre" class="negrita">Nombre</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="" id="nombre">
+                </div>
+                <div class="alert alert-danger error1" role="alert">Tienes que introducir un nombre</div>
+                <div class="form-group">
+                    <label for="apellido" class="negrita">Apellidos</label>
+                    <input type="text" th:field="*{apellidos}" class="form-control" placeholder="" id="apellido">
+                </div>
+                <div class="alert alert-danger error2" role="alert">Tienes que introducir los apellidos</div>
+                <div class="form-group">
+                    <label for="nacimiento" class="negrita">Fecha Nacimiento</label>
+                    <input type="date" th:field="*{fechaNacimiento}"  class="form-control" placeholder="" id="nacimiento">
+                </div>
+                <div class="alert alert-danger error3" role="alert">Tienes que tener al menos 16 años</div>
+                <div class="form-group">
+                    <label for="localidad" class="negrita">Localidad</label>
+                    <input type="text" th:field="*{localidad}"  class="form-control" placeholder="" id="localidad">
+                </div>
+                <div class="form-group">
+                    <label for="email2" class="negrita">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" placeholder="" id="email2">
+                </div>
+                <div class="alert alert-danger error4" role="alert">El correo electrónico introducido ya existe</div>
+                <div class="alert alert-danger error7" role="alert">Introduce un correo electrónico</div>
+                <div class="form-group">
+                    <label for="pwd3" class="negrita">Contraseña</label>
+                    <input type="password" th:field="*{password}" class="form-control" placeholder="Introduce una contraseña" id="pwd3">
+                </div>
+                <div class="alert alert-danger error5" role="alert">Tienes que introducir una contraseña con mínimo 8 caractéres</div>
+                <div class="form-group">
+                    <label for="pwd4" class="negrita">Repetir Contraseña</label>
+                    <input type="password" class="form-control" placeholder="Confirma la contraseña" id="pwd4">
+                </div>
+                <div class="alert alert-danger error6" role="alert">Las contraseñas no coindicen</div>
+                <button type="submit" class="btn btn-success regist submit" disabled>Registrarse</button>
+            </form>
+            <div class="centrado">
+                <p>¿Ya tienes cuenta?</p>
+                <a href="#">Inicia sesión</a>
+            </div>
+        </section>
+
+    </main>
+    <footer class="footer">
+
+    </footer>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        function checkInput(idInput, classError){
+            if($(idInput).val() == ""){
+                $(classError).show();
+                return false;
+            }
+            else{
+                $(classError).hide();
+                return true;
+            }
+            
+        }
+        
+
+        function checkEmail() {
+            var emails = [];
+            emails = /*[[${emails}]]*/ 'default';
+            var email = $("#email2").val();
+            var correcto = true;
+
+            for(var i = 0; i < emails.length && correcto; i++){
+                if(emails[i] === email){
+                    correcto = false;
+                    $(".error4").show();
+                }
+                else{
+                    $(".error4").hide();
+                }
+            }
+            return correcto;
+            
+        }
+       
+
+        function comprobarContrasena(){
+            var con1 = document.getElementById("pwd3");
+            var con2 = document.getElementById("pwd4");
+
+            if(con1.value.length < 8){
+                $(".error5").show();
+                return false;
+            }
+            else{
+                $(".error5").hide();
+            }
+            
+            if(con2.value.length == 0 || con1.value !== con2.value){
+                $(".error6").show();
+                return false;
+            }
+            
+            $(".error6").hide();
+            return true;
+        }
+
+        function comprobarEdad(){
+            var hoy = new Date();
+            
+            var nac = document.getElementById("nacimiento");
+            if(nac.value ===""){
+                
+                return false;
+            }
+            else{
+                var fecha = new Date(nac.valueAsDate);
+                var edad = hoy.getYear() - fecha.getYear();
+                
+                if( edad < 16){
+                    $(".error3").show();
+                    return false;
+                }
+                else if(edad == 16){
+                    if(hoy.getMonth() < fecha.getMonth()){
+                        $(".error3").show();
+                        return false;
+                    }
+                    else if(hoy.getMonth() == fecha.getMonth()){
+                        if(hoy.getDate() < fecha.getDate()){
+                            $(".error3").show();
+                            return false;
+                        }
+                    }
+
+                }
+                $(".error3").hide();
+
+            }
+
+            return true;
+        }
+
+
+        function enableSubmit (idForm) {
+          $(idForm + " button.submit").removeAttr("disabled");
+        }
+      
+        function disableSubmit (idForm) {
+          $(idForm + " button.submit").attr("disabled", "disabled");
+        }
+
+        function checkFormRegistro (idForm) {
+          $(idForm + " *").on("change keydown", function() {
+            if (checkInput("#nombre", ".error1") && 
+            checkInput("#apellido", ".error2") && comprobarEdad() && 
+            checkInput("#email2", ".error7") && checkEmail()&&
+             comprobarContrasena()){
+              enableSubmit(idForm);
+            } 
+            else {
+              disableSubmit(idForm);
+            }
+          });
+        }
+
+
+        $(function(){
+            $(".registrar").hide();
+
+            $("a").eq(1).click(function(event) {
+                $(".registrar").show();
+                $(".entrar").hide();
+                
+            });
+            $("a").eq(2).click(function(event) {
+                $(".registrar").hide();
+                $(".entrar").show();
+                
+            });
+
+           
+			$("body").on("click",".ojo",function (event) {
+           
+                $("span").toggleClass("ojo").toggleClass("abierto");
+                $(":password").attr("type", "text");
+				$("span").removeClass("fa-eye").addClass("fa-eye-slash");
+			});
+			
+			$("body").on("click",".abierto",function (event){
+            	
+                $("span").toggleClass("ojo").toggleClass("abierto");
+                $("input").eq(1).attr("type", "password");
+				$("span").removeClass("fa-eye-slash").addClass("fa-eye");
+					
+            });
+            
+            $(".error1").hide();
+            $(".error2").hide();
+            $(".error3").hide();
+            $(".error4").hide();
+            $(".error5").hide();
+            $(".error6").hide();
+            $(".error7").hide();
+          
+            checkFormRegistro("#registro");
+          
+
+        });
+        /*]]>*/
+    </script>
+
+  </body>
+</html>

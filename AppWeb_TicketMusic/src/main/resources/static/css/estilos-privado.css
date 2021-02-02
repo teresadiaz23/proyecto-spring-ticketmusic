@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Nunito+Sans&family=Roboto&display=swap');
+
+body{
+
+    background-color: #70c1b3;
+    background-color: rgba(112, 193, 179, 0.5);
+    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Manrope','Roboto', arial,sans-serif;
+}
+
+/*Header*/
+.jumbotron{
+    background-color: rgba(255, 157, 7, 0.9);
+    height: 160px;
+    border-radius: 0%;
+}
+
+header div ul{
+    text-align: center;
+    list-style: none;
+    justify-content: space-around;
+    width: 100%;
+    
+    
+}
+header div ul a{
+    width: 150px;
+    text-align: center;
+    margin-top: 10px;
+    color: black;
+    
+}
+header div ul a:hover{
+    color: #004e64;
+}
+header div ul a i{
+    font-size: 25pt;
+    text-align: center;
+}
+
+.banner a{
+    text-decoration: none;
+    padding-top: 10px;
+    
+}
+
+
+/*Nav*/
+.form-inline{
+    align-content: flex-end;    
+}
+
+nav .form-control{
+    border: 1px solid white;
+}
+.buscar{
+    color:white;
+}
+li{
+    font-size: 14pt;
+    
+}
+.logo{
+    width: 150px;;
+}
+ul div:first-child{
+    display: flex;
+    width: 300px;
+    align-content: flex-start;
+    
+}
+
+ul div:first-child li{
+   margin-right: 10px;
+}
+.sesion{
+   
+    width: 220px;
+    margin-right: 50px;
+    margin-left: 80px;
+    
+}
+
+
+/*Main*/
+
+main{
+    margin-top: 100px;
+}
+
+main ul{
+    list-style: none;
+    margin-left: 50px;
+    justify-content: flex-start;
+}
+
+main h3{
+  margin-left: 40px;
+  margin-top: -60px;
+  margin-bottom: -20px; 
+}
+
+ main .form-control{
+    border: 1px solid grey;
+ }
+
+
+
+main div div{
+    width: 100%;
+    margin-right: 60px;
+    margin-bottom: 25px;
+}
+
+
+
+main p{
+    font-size: 14pt;
+    color: black;
+    margin-top: 10px;
+}
+
+main a:hover{
+    text-decoration: none;
+    
+}
+
+thead th{
+    background-color: #ff9d07;
+}
+tbody tr td i{
+    font-size: 15pt;
+     
+}
+tbody tr td .btn{
+  padding: .100rem .50rem;
+  text-align: center;
+  
+}
+.cartel{
+	width: 100px;
+}
+
+
+main .nav{
+    margin-top: 30px;
+    margin-bottom: 60px;
+}
+
+.usuario{
+    color: white;
+    font-size: 14pt;
+    margin: auto;
+    width: 200px;
+    height: 60px;
+    border-bottom: 1px solid #17a2b8;
+    padding-left: 20px;
+    padding-top: 20px;
+    margin-left: 0px;
+}
+
+.usuario i{
+    color: #17a2b8;
+    
+}
+
+main.pagUsuario button{
+    margin-bottom: 30px;
+}
+main.pagUsuario .col-6{
+    padding-left: 0px;
+}
+main.pagUsuario h2, main.pagUsuario h4{
+    margin-bottom: 20px;
+}
+
+main.pagUsuario thead th{
+    background-color: #eac435;
+}
+
+.fas{
+    line-height: 0.5;
+}
+
+.centrado{
+    text-align: center;
+}
+.negrita{
+    font-weight: bold;
+}
+
+.oculto{
+    visibility: hidden;
+}
+
+.errorOculto {
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    font-size: 80%;
+    margin-bottom: 10px;
+
+}
+
+
+footer{
+    height: 200px;
+    margin-top: 50px;
+    padding-top: 50px;
+    
+}
+footer h4{
+    padding-bottom: 20px;
+}
+

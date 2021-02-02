@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header class="bg-danger" th:fragment="encabezado-user">
+      <nav class="navbar navbar-expand-sm bg-info navbar-dark fixed-top">
+        <a class="navbar-brand logo" href="#">
+          <img src="../../static/img/logo2.png" th:src="@{/img/logo2.png}" class="w-25" alt="Logo"> TicketMusic
+        </a>
+
+        <ul class="navbar-nav">
+          <div>
+            <li class="nav-item">
+              <a class="nav-link" href="/" th:href="@{/}">Inicio</a>
+            </li>
+
+            <!-- Menú desplegable -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Eventos</a>
+              <div class="dropdown-menu bg-info navbar-dark">
+                <a class="dropdown-item" href="/eventos" th:href="@{/eventos}">Todos los eventos</a>
+                <a  class="dropdown-item dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">Conciertos</a>
+                <div class="dropdown-menu bg-info navbar-dark">
+                  <a class="dropdown-item" href="/conciertos" th:href="@{/conciertos}">Todos los conciertos</a>
+                  <a  th:each="genero : ${generos}" class="dropdown-item" href="#" th:href="@{/conciertos/?(genero=${genero})}"
+                  th:text="${genero} ">Pop</a>
+                </div>
+                <a class="dropdown-item" href="/festivales" th:href="@{/festivales}">Festivales</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contacto" th:href="@{/contacto}">Contacto</a>
+            </li>
+          </div>
+
+          <div class="sesion">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user nav-link"></i><span th:text="${#authentication.getPrincipal().getNombre()}">Mi Cuenta</span> 
+              </a>
+              <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/user/" th:href="@{/user/}">Mi Cuenta</a>
+                <span sec:authorize="hasRole('ROLE_ADMIN')">
+                	<a class="dropdown-item" href="/admin/" th:href="@{/admin/}">Zona Privada</a>
+                </span>
+              	<a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Salir</a>
+              </div>
+            </li>
+          </div>
+        </ul>
+
+        <form class="form-inline" action="#" th:action="@{/search}" th:object="${searchForm}"
+          method="POST">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar por artista, ciudad o evento" size="40"
+            th:field="*{search}"/>
+            <div class="input-group-append">
+                <button class="btn btn-success" type="submit">
+                  <span class="fas fa-search buscar"></span>
+                </button>
+            </div>
+          </div>
+					
+		</form>
+      </nav>
+      
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+        <div class="row user">
+            <aside class="col-4" th:fragment="menu-lateral">
+                <h3>Bienvenido, <span th:text="${#authentication.getPrincipal().getNombre()}">Usuario</span></h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item ">
+                      <a class="nav-link usuario" href="/user/entradas" th:href="@{/user/entradas}">
+                      	<i class="fas fa-ticket-alt"></i> Mis Entradas</a>
+                    </li>
+                    <li class="nav-item ">
+                      <a class="nav-link usuario" href="/user/perfil" th:href="@{/user/perfil/{id}(id=${#authentication.getPrincipal().getId()})}">
+                      	<i class="fas fa-user-circle"></i> Mi Perfil</a>
+                    </li>
+                </ul>
+            </aside>
+      
+            <section class="col-7">
+                <div class="col-12">
+                    <p>Aquí podrás consultar tus entradas o ver tus datos de perfil</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Compra de entradas</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../static/css/estilos-publico.css" th:href="@{/css/estilos-publico.css}"/>
+    <style>
+      
+      main.evento div div{
+          height: 220px;
+          margin-left: 0px;
+          text-align: center;
+          
+          
+      }
+      
+        main.evento div {
+            margin-left: 70px;
+            margin-right: 20px;
+        }
+        .alert{
+          width: 600px;
+          height: 50px;
+        }
+
+     
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-publico::encabezado-publico}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid evento info">
+    	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+        <div class="col-12 infoEvento">
+            <div class="col-8 d-flex flex-row">
+            
+                <div class="col-5">
+                  <img th:src="${not (#strings.isEmpty(evento.cartel))} ? @{{base}/files/{id}(base=${base_image_path},id=${evento.cartel})} : 'https://image.freepik.com/foto-gratis/happy-people-dance-in-nightclub-party-concert_31965-114.jpg' " 
+								class="img-responsive icono-categoria" alt="imagen evento"/>
+                </div>
+                <div class="col-1 text-center fechaEvento">
+                	<p th:text="${#temporals.dayOfWeekName(evento.fecha)}">09</p>
+                    <p class="dia" th:text="${#temporals.format(evento.fecha, 'dd')}">09</p>
+                    <p th:text="${#temporals.format(evento.fecha, 'MMM')}">mayo</p> 
+                    <p th:text="${#temporals.year(evento.fecha)}"></p>
+                    
+                </div>
+                <div class="col-4">
+                  <p class="negrita nomArt"><span th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}">Nombre artista 1</span>:
+                  <span th:text="${evento.nombre}"> evento</span> </p>
+                  
+                  <p><span th:text="${evento.recinto.nombre}">Recinto</span>,
+             		<span th:text="${evento.recinto.ciudad.nombre}">Ciudad</span></p>
+             		<p th:text=${evento.hora}>Hora evento</p>
+                </div>
+                
+            </div>
+        </div>
+        
+            
+      <h2 class="izquierda">Seleccionar entradas</h2>
+      
+		<div class="col-12 row">
+		<form class="col-12 row" name='entradas' id="entradas" method='POST' th:action='@{/eventos/entradas/comprar/submit/{id}(id=${evento.id})}'  >
+
+			<div class="col-2 d-flex flex-column">
+                <div class="">
+                    <p class="negrita nomArt" th:text="${general.nombre}">General</p>
+                </div>
+                <div class="">
+                    <p class="negrita nomArt" th:text="${#numbers.formatCurrency(general.precio)}">Precio</p>
+                </div>
+                
+                    <div class="form-group w-50 mx-auto">
+                        <input type="number" th:name="cantidad1" class="form-control text-center" id="cantidad1" name="cantidad1" min="0" max="6" value="0">
+                    </div>
+                    
+  
+        	</div>
+        	<div class="col-2 d-flex flex-column">
+                <div class="">
+                    <p class="negrita nomArt" th:text="${vip.nombre}">Entrada VIP</p>
+                </div>
+                <div class="">
+                    <p class="negrita nomArt" th:text="${#numbers.formatCurrency(vip.precio)}">Precio</p>
+                </div>
+               
+                    <div class="form-group w-50 mx-auto">
+                        <input type="number" th:name="cantidad2" class="form-control text-center" id="cantidad2" name="cantidad3" min="0" max="6" value="0">
+                    </div>
+
+         	</div>
+       
+            <div class="col-2 d-flex flex-column">
+                <div class="">
+                    <p class="negrita nomArt" th:text="${premium.nombre}">Entrada Premium</p>
+                </div>
+                <div class="">
+                    <p class="negrita nomArt" th:text="${#numbers.formatCurrency(premium.precio)}">Precio</p>
+                </div>
+                
+                <div class="form-group w-50 mx-auto">
+                  <input type="number" th:name="cantidad3"  class="form-control text-center" id="cantidad3" name="cantidad4" min="0" max="6" value="0">
+                </div>
+ 
+            </div>
+            <span class="alert alert-danger error" role="alert">
+              No puedes comprar más de 6 entradas
+            </span>
+            <span class="col-6 text-center mt-3 ml-5">
+              <button type="submit" class="btn btn-primary submit" disabled>Añadir entradas</button>
+            </span>
+            
+           </form>
+        
+        </div>
+    
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    <script>
+   
+      
+      
+      function checkInput(idInput) {
+        return $(idInput).val()>0 ? true : false;
+      }
+
+      function checkCantidad() {
+        
+        var cantidad1 = parseInt($("#cantidad1").val());
+        var cantidad2 = parseInt($("#cantidad2").val());
+        var cantidad3 = parseInt($("#cantidad3").val());
+        var total = cantidad1 + cantidad2 + cantidad3;
+        
+        if((total) > 6){
+          
+          $(".alert").show();
+          return false;
+        }
+        else{
+          
+          $(".alert").hide();
+          return true;
+        }
+        	
+      }
+      
+
+      
+      function enableSubmit (idForm) {
+        $(idForm + " button.submit").removeAttr("disabled");
+      }
+      
+      function disableSubmit (idForm) {
+        $(idForm + " button.submit").attr("disabled", "disabled");
+      }
+
+      function checkForm (idForm) {
+        $(idForm + " *").on("change keydown", function() {
+          if (checkInput("#cantidad1") ||
+          checkInput("#cantidad2") ||
+          checkInput("#cantidad3")) {
+            if(checkCantidad()){
+              enableSubmit(idForm);
+            }
+            else {
+              disableSubmit(idForm);
+              
+            } 
+          }
+          else {
+            disableSubmit(idForm);
+              
+          } 
+        });
+      }
+      
+      
+
+    $(function() {
+      $(".alert").hide();
+      checkForm("#entradas");
+    });
+
+
+  
+  </script>
+  </body>
+</html>

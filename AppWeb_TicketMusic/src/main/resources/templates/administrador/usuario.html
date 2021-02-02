@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Administrar Usuarios</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <script src="../../static/js/codigoBorrar.js" th:src="@{/js/codigoBorrar.js}"></script>
+    <style>
+
+        
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-admin::encabezado-admin}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+      <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+      <div class="d-flex flex-column col-12">
+          <div class="col-12">
+              <h3 class="text-center display-4">Gestión Usuarios</h3>
+          </div>
+          <div class="col-12">
+              
+
+                <!-- Button to Open the Modal -->
+                <button type="button" class="btn btn-success border-0 float-right agregar" id="agregar" data-toggle="modal" data-target="#addUser">
+                    <i class="fas fa-user-plus"></i><span th:text="${usuario.id} ? ' Editar' : ' Añadir'"></span> usuario
+                </button>
+                
+                <!-- The Modal -->
+                <div class="modal" id="addUser">
+                    <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                        <h4 class="modal-title"><span th:text="${usuario.id} ? 'Editar' : 'Añadir'"></span> Usuario</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                         
+                            <form name="registro" class="align-items-center" id="agregarU" method="POST" 
+                            th:action="@{/admin/usuario/submit}" th:object="${usuario}">
+                           	
+ 								                <input type="hidden" th:field="*{id}" id="id" />
+                                <div class="form-row">
+                                    <div class="form-group col-3">
+                                        <label for="nombre" class="negrita">Nombre</label>
+                                        <input type="text" th:field="*{nombre}" class="form-control" placeholder="" id="nombre">
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="apellido" class="negrita">Apellidos</label>
+                                        <input type="text" th:field="*{apellidos}" class="form-control" placeholder="" id="apellido">
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="nacimiento" class="negrita">Fecha Nacimiento</label>
+                                        <input type="date" th:field="*{fechaNacimiento}" class="form-control" placeholder="" id="nacimiento">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-3">
+                                        <label for="localidad" class="negrita">Localidad</label>
+                                        <input type="text" th:field="*{localidad}" class="form-control" placeholder="" id="localidad">
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="email" class="negrita">Email</label>
+                                        <input type="email" th:field="*{email}" class="form-control" placeholder="" id="email">
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="pwd" class="negrita">Contraseña</label>
+                                        <input type="password" th:field="*{password}" class="form-control" placeholder="" id="pwd">
+                                    </div>
+                                </div>
+                                <div class="form-check col-12">
+                                    <input class="form-check-input" type="checkbox" value="true" th:field="*{admin}" id="administrador">
+                                    <label class="form-check-label" for="administrador">
+                                     Administrador
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                                <button type="button" class="btn btn-warning">Limpiar</button>
+                            </form>
+                        </div>
+                
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                            
+                            
+                        </div>
+                    
+                
+                    </div>
+                    </div>
+                </div>
+                <form class="navbar-form w-25 mb-2">
+                  <input type="text" class="form-control" placeholder="Buscar..."
+                    name="q" th:value="${param.q}">
+                </form>
+              <table class="table table-striped tabla" summary="Tabla que muestra los usuarios guardados en la aplicación">
+                  <caption></caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Apellidos</th>
+                      <th scope="col">Fecha Nacimiento</th>
+                      <th scope="col">Localidad</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Administador</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Borrar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="usuario : ${usuarios}">
+                      <td th:text="${usuario.nombre}">Mark</td>
+                      <td th:text="${usuario.apellidos}">Otto</td>
+                      <td th:text="${#temporals.format(usuario.fechaNacimiento, 'dd/MM/yyyy')}">@mdo</td>
+                      <td th:text="${usuario.localidad}">Mark</td>
+                      <td th:text="${usuario.email}">Otto</td>
+                      <td th:text="${usuario.admin}">Otto</td>
+                      <td><a class="btn btn-outline-warning border-0 editar" id="editar" 
+                      th:href="@{/admin/usuario/editar/{id}(id=${usuario.id})}" >
+                      	<i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="#" class="btn btn-outline-danger border-0" data-toggle="modal"
+                          data-target="#delete-modal" th:data-id="${usuario.id}"><i class="fas fa-user-minus"></i></a></td>
+                   
+                    </tr>
+                    
+                  </tbody>
+                  <tfoot></tfoot>
+                </table>
+          </div>
+                
+      </div>
+
+      <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Borrar usuario</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está usted seguro de borrar este usuario?</p>
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a href="/admin/usuario/borrar/" class="btn btn-danger">Sí</a>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+        
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+
+  </body>
+</html>

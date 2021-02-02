@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Administrar Artistas</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <script src="../../static/js/codigoBorrar.js" th:src="@{/js/codigoBorrar.js}"></script>
+    <style>
+        
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-admin::encabezado-admin}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+      <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+      <div class="d-flex flex-column col-12">
+          <div class="col-12">
+              <h3 class="text-center display-4">Gestión Artistas</h3>
+          </div>
+          <div class="col-12">
+
+                <a href="#" class="btn btn-success agregar border-0 float-right" id="agregar">
+                    <i class="fas fa-plus-circle"></i><span th:text="${artista.id} ? ' Editar' : ' Añadir'"></span> artista
+                </a>
+                
+            	<form name='artista' id="artista" method='POST' th:action='@{/admin/artista/submit}' th:object='${artista}'
+            	class="mb-5"> 
+	                <h4 class="negrita"><span th:text="${artista.id} ? ' Editar' : ' Nuevo'"></span> artista</h4>
+	                <input type='hidden' th:field='*{id}' id='id' />
+	                <div class="form-row">
+		                <div class="col-2">
+			                <label for="nombre">Nombre</label>
+			                <input type='text' th:field='*{nombre}' id="nombre"></input>
+			            </div>
+	                </div>
+	                <button type='submit' class='btn btn-success oculto' id='guardar'>Guardar</button>
+	                <a href="#" th:href="@{/admin/artista/}" class="btn btn-danger oculto" id="descartar">Descartar</a>
+                	
+	              </form>
+	              
+	              
+	          <form class="navbar-form w-25 mb-2">
+                  <input type="text" class="form-control" placeholder="Buscar..."
+                    name="q" th:value="${param.q}">
+              </form>
+              <table class="table table-striped" summary="Tabla que muestra los artistas guardados en la aplicación">
+                  <caption></caption>
+                  <thead>
+                    <tr>
+                      
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Borrar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="artista : ${artistas}">
+                      
+                      <td th:text="${artista.nombre}">Mark</td>
+                      <td><a href="#" class="btn btn-outline-warning border-0 editar" th:href="@{/admin/artista/editar/{id}(id=${artista.id})}">
+                      <i class="fas fa-edit"></i></a></td>
+                      
+                      <td><a href="#" class="btn btn-outline-danger border-0" data-toggle="modal"
+                        data-target="#delete-modal" th:data-id="${artista.id}"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                   
+                   
+                  </tbody>
+                  <tfoot>
+
+                  </tfoot>
+                </table>
+                
+                
+
+          </div>
+            
+      </div>
+      <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Borrar artista</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está usted seguro de borrar este artista?</p>
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a href="/admin/artista/borrar/" class="btn btn-danger">Sí</a>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    <script>
+      $(function(){
+
+      
+
+        $("main form#artista").hide();
+            $("body").on("click",".agregar",function (event) {
+                $("#agregar").removeClass("agregar");
+                
+                  $(".oculto").css("visibility","visible");
+                
+              $("main form#artista").last().show();
+            });
+        
+
+            $("body").on("click", "#guardar", function (event) {
+                  $("#agregar").addClass("agregar");
+                  $(".oculto").css("visibility", "hidden");
+                  $("main form#artista").hide();
+            });
+
+            $("body").on("click", "#limpiar", function (event) {
+                $("main input").eq(1).val("");
+          
+            });
+
+        $("body").on("click", "#descartar", function (event) {
+            
+                  $("main form#artista").hide();
+                  $(".oculto").css("visibility", "hidden");
+                  $("#agregar").addClass("agregar");
+        });
+          
+      });
+	</script>
+
+  </body>
+</html>

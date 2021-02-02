@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Administrar Ciudades</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <script src="../../static/js/codigoBorrar.js" th:src="@{/js/codigoBorrar.js}"></script>
+    <style>
+        
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-admin::encabezado-admin}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+      <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+      <div class="d-flex flex-column col-12">
+          <div class="col-12">
+              <h3 class="text-center display-4">Gestión Ciudades</h3>
+          </div>
+          <div class="col-12">
+              
+                <button type="button" class="btn btn-success agregar border-0 float-right" id="agregar">
+                    <i class="fas fa-plus-circle"></i><span th:text="${ciudad.id} ? ' Editar' : ' Añadir'"></span> Ciudad
+                </button>
+                
+            
+              <table class="table table-striped" summary="Tabla que muestra los artistas guardados en la aplicación">
+                  <caption></caption>
+                  <thead>
+                    <tr>
+
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Editar</th>
+                      <th scope="col">Borrar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="ciudad : ${ciudades}">
+
+                      <td th:text="${ciudad.nombre}">Mark</td>
+                      <td><a href="#" class="btn btn-outline-warning border-0 editar" th:href="@{/admin/ciudad/editar/{id}(id=${ciudad.id})}"><i class="fas fa-edit"></i></a></td>
+                      
+                      <td><a href="#" class="btn btn-outline-danger border-0" data-toggle="modal"
+                        data-target="#delete-modal" th:data-id="${ciudad.id}"><i class="fas fa-trash-alt"></i></a></td>
+                    </tr>
+                    
+                  </tbody>
+                  <tfoot>
+
+                  </tfoot>
+                </table>
+                <form name='ciudad' method='POST' th:action='@{/admin/ciudad/submit}' th:object='${ciudad}'> 
+	                <h4 class="negrita"><span th:text="${ciudad.id} ? ' Editar' : ' Nueva'"></span> ciudad</h4>
+	                <input type='hidden' th:field='*{id}' id='id' />
+	                <div class="form-row">
+		                <div class="col-2">
+			                <label for="nombre">Nombre</label>
+			                <input type='text' th:field='*{nombre}' id="nombre"></input>
+			            </div>
+	                </div>
+	                <button type='submit' class='btn btn-success oculto' id='guardar'>Guardar</button>
+	                <a href="#" th:href="@{/admin/ciudad/}" class="btn btn-danger oculto" id="descartar">Descartar</a>
+                	
+	              </form>
+          </div>
+      </div>
+      <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">Borrar ciudad</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Está usted seguro de borrar esta ciudad?</p>
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <a href="/admin/ciudad/borrar/" class="btn btn-danger">Sí</a>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    <script>
+		$(function(){
+
+			$("main form").hide();
+          $("body").on("click",".agregar",function (event) {
+            	  $("#agregar").removeClass("agregar");
+                $(".oculto").css("visibility","visible");
+                $("main form").last().show();
+         	});
+
+         	$("body").on("click", "#guardar", function (event) {
+                $("#agregar").addClass("agregar");
+               
+                $("main form").hide();
+                        
+                $(".oculto").css("visibility", "hidden");
+          });
+
+          $("body").on("click", "#limpiar", function (event) {
+		          $("input").eq(1).val("");
+				
+			    });
+
+      $("body").on("click", "#descartar", function (event) {
+                
+                $("main form").hide();
+                $(".oculto").css("visibility", "hidden");
+                $("#agregar").addClass("agregar");
+      });
+				
+		});
+	</script>
+
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Pago compra de entradas</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    
+    <link rel="stylesheet" href="../css/estilos-publico.css" th:href="@{/css/estilos-publico.css}"/>
+    <style>
+      
+      main.evento div div{
+          height: 500px;
+          margin-left: 0px;
+      }
+      
+        main.evento div {
+            margin-left: 70px;
+            margin-right: 20px;
+        }
+        
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-publico::encabezado-publico}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid evento info">
+    	<form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+        <div class="col-12 infoEvento">
+            <div class="col-10 d-flex flex-row">
+            
+                <div class="col-4">
+                  <img th:src="${not (#strings.isEmpty(evento.cartel))} ? @{{base}/files/{id}(base=${base_image_path},id=${evento.cartel})} : 'https://image.freepik.com/foto-gratis/happy-people-dance-in-nightclub-party-concert_31965-114.jpg' " 
+								class="img-responsive icono-categoria" th:alt-title="${evento.nombre}"/>
+                </div>
+                <div class="col-1 text-center fechaEvento">
+                    <p th:text="${#temporals.dayOfWeekName(evento.fecha)}">09</p>
+                    <p class="dia" th:text="${#temporals.format(evento.fecha, 'dd')}">09</p>
+                    <p th:text="${#temporals.format(evento.fecha, 'MMM')}">mayo</p> 
+                    <p th:text="${#temporals.year(evento.fecha)}"></p>
+                </div>
+                <div class="col-4">
+                  <p class="negrita nomArt"><span th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}">Nombre artista 1</span>:
+                  <span th:text="${evento.nombre}"> evento</span> </p>
+                  
+                  <p><span th:text="${evento.recinto.nombre}">Recinto</span>,
+             		<span th:text="${evento.recinto.ciudad.nombre}">Ciudad</span></p>
+             		<p th:text=${evento.hora}>Hora evento</p>
+                </div>
+                
+            </div>
+            
+        </div>
+
+      <div class="col-12 row">
+      
+            <div class="col-6 pago">
+              <h3 class="mt-3 negrita text-center">Pago</h3>
+                <form name="pago" id="pago" class="mx-auto" 
+                th:action="@{/user/comprar/confirmacion/{id}(id=${evento.id})}">
+                    <div class="mt-3 mx-auto">
+                        <div class="col-12 mx-auto">
+                            <label for="nombreTitular">Nombre Titular</label>
+                            <input type="text" class="form-control" id="nombreTitular" placeholder="" name="nombreTitular">
+                          </div>
+                        <div class="errorOculto">Tienes que introducir un nombre</div>
+                        <div class="col-10 mx-auto">
+                          <label for="numTarjeta">Número tarjeta</label>
+                          <input type="text" class="form-control" id="numTarjeta" placeholder="" name="numTarjeta" minlength="16" max="16">
+                        </div>
+                        <div class="errorOculto">El número de la tarjeta tiene que ser de 16 cifras</div>
+                        <div class="col-4 mx-auto">
+                          <label for="cvs">CVS</label>
+                          <input type="text" class="form-control" id="cvs" placeholder="123" name="cvs" minlength="3" maxlength="3">
+                        </div>
+                        <div class="errorOculto">El número tiene que ser de 3 cifras</div>
+                        <div class="col-10 mx-auto">
+                          <label for="caducidad">Fecha de caducidad</label>
+                          <input type="date" class="form-control" id="caducidad" name="caducidad">
+                        </div>
+                        <div class="errorOculto">La tarjeta está caducada</div>
+                    </div>
+                    <div class="col-8 mx-auto mt-3 text-center">
+                      <button type="submit" th:href="@{/user/comprar/confirmacion/{id}(id=${evento.id})}" 
+                      class="btn btn-primary submit" disabled>
+                        Pagar</button> 
+                        
+                    </div>
+                </form>
+                
+
+
+            </div>
+
+            <div class="col-4 d-flex flex-column">
+                
+             	<div>
+                    <h3 class="mt-3 mb-4 text-center negrita">Tu compra</h3>
+                    <ul class="list-group">
+	                    <li class="list-group-item bg-info">Número Entradas: <span th:text="${numUnidades}"></span></li>
+	                    <li class="negrita list-group-item"><span th:text="${#strings.listJoin(evento.artistas.![nombre], ',')}">Nombre artista 1</span>:
+	                  <span th:text="${evento.nombre}"> evento</span> </li>
+	                  <li class="list-group-item">
+	                  <span th:text="${#temporals.dayOfWeekName(evento.fecha)}">lunes</span>, 
+	                   <span th:text="${#temporals.format(evento.fecha, 'dd/MMM/yy')}">mayo</span>, 
+	                   <span th:text=${evento.hora}>Hora evento</span>
+	                  </li>
+
+					</ul>
+					<div class="mt-5 h-25 text-center">
+	                    <p>Subtotal  <span th:text="${#numbers.formatCurrency(subTotal)}"></span></p>
+	                    <p>Gastos de gestión  <span th:text="${#numbers.formatCurrency(gastosGestion*numUnidades)}"></span></p>
+	                    <p class="negrita pt-5">Total  <span th:text="${#numbers.formatCurrency(importeTotal)}"></span></p>
+                    </div>
+                    
+                </div>
+                <p class="text-center"><a th:href="@{/cesta/clear/{id}(id=${evento.id})}">Cancelar compra</a></p>
+                
+            </div>
+            
+        
+        </div>
+        
+    
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    <script>
+   
+      
+      var namePattern = "^[a-z A-Z]{4,30}$";
+      function checkInput(idInput, pattern) {
+        return $(idInput).val().match(pattern) ? true : false;
+      }
+
+      function checkTarjeta(idText) {
+        var tarjeta = document.getElementById("numTarjeta");
+        if($(idText).val().length == 16){
+          quitarError(tarjeta)
+          return true;
+        }
+        else{
+          mandarError(tarjeta);
+          return false;
+        }
+        
+      }
+      function checkCVS(idText) {
+        return $(idText).val().length == 3 ? true : false;	
+      }
+
+      
+      function enableSubmit (idForm) {
+        $(idForm + " button.submit").removeAttr("disabled");
+      }
+      
+      function disableSubmit (idForm) {
+        $(idForm + " button.submit").attr("disabled", "disabled");
+      }
+
+      function checkForm (idForm) {
+        $(idForm + " *").on("change keydown", function() {
+        if (checkInput("#nombreTitular", namePattern) && 
+          checkTarjeta("#numTarjeta") && 
+          checkCVS("#cvs") &&
+          comprobarFecha()) {
+            enableSubmit(idForm);
+          } else {
+            disableSubmit(idForm);
+          }
+        });
+      }
+
+      function mandarError(campo) {
+        campo.style.border = "2px solid red";
+        campo.parentNode.nextElementSibling.style.color = "red";
+        campo.parentNode.nextElementSibling.style.maxHeight = "20px";
+        campo.parentNode.nextElementSibling.style.overflow = "visible";
+          
+      }
+      function quitarError(campo){
+        campo.style.border = "1px solid #ced4da";
+        campo.parentNode.nextElementSibling.style.maxHeight = "0px";
+        campo.parentNode.nextElementSibling.style.overflow = "hidden";
+      }
+      function comprobarFecha(){
+        var hoy = new Date();
+        
+        var cad = document.getElementById("caducidad");
+        if(cad.value ===""){
+          mandarError(nac);
+          return false;
+        }
+        else{
+          var fecha = new Date(cad.valueAsDate);
+          var caducidad =   fecha.getYear() - hoy.getYear();
+        
+          if( caducidad < 0){
+            mandarError(cad);
+            return false;
+          }
+          else if(caducidad == 0){
+            if(hoy.getMonth() > fecha.getMonth()){
+              mandarError(cad);
+              return false;
+            }
+            else if(hoy.getMonth() == fecha.getMonth()){
+              if(hoy.getDate() > fecha.getDate()){
+                mandarError(cad);
+                return false;
+              }
+            }
+
+          }
+          quitarError(cad);
+        }
+        
+        
+        return true;
+      }
+
+    $(function() {
+      checkForm("#pago");
+    });
+
+
+  
+  </script>
+  </body>
+</html>

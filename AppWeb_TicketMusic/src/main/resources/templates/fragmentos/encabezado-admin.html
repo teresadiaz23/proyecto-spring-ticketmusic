@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header class="jumbotron" th:fragment="encabezado-admin">
+      <nav class="navbar navbar-expand-sm bg-info navbar-dark fixed-top">
+        <a class="navbar-brand logo" href="#">
+          <img src="../../static/img/logo2.png" th:src="@{/img/logo2.png}" class="w-25" alt="Logo"> TicketMusic
+        </a>
+
+        <ul class="navbar-nav">
+          <div>
+            <li class="nav-item">
+              <a class="nav-link" href="/" th:href="@{/}">Inicio</a>
+            </li>
+
+            <!-- Menú desplegable -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Eventos</a>
+              <div class="dropdown-menu bg-info navbar-dark">
+                <a class="dropdown-item" href="/eventos" th:href="@{/eventos}">Todos los eventos</a>
+                <a  class="dropdown-item dropdown-toggle" href="#" id="navbardrop2" data-toggle="dropdown">Conciertos</a>
+                <div class="dropdown-menu bg-info navbar-dark">
+                  <a class="dropdown-item" href="/conciertos" th:href="@{/conciertos}">Todos los conciertos</a>
+                  <a  th:each="genero : ${generos}" class="dropdown-item" href="#" th:href="@{/conciertos/?(genero=${genero})}"
+                  th:text="${genero} ">Pop</a>
+                </div>
+                <a class="dropdown-item" href="/festivales" th:href="@{/festivales}">Festivales</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contacto" th:href="@{/contacto}">Contacto</a>
+            </li>
+          </div>
+
+          <div class="sesion">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user nav-link"></i><span th:text="${#authentication.getPrincipal().getNombre()}">Mi Cuenta</span>
+              </a>
+              <div class="dropdown-menu bg-info" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/user/" th:href="@{/user/}">Mi Cuenta</a>
+                <span sec:authorize="hasRole('ROLE_ADMIN')">
+                	<a class="dropdown-item" href="/admin/" th:href="@{/admin/}">Zona Privada</a>
+                </span>
+              	<a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item">Salir</a>
+              </div>
+             
+            </li>
+          </div>
+        </ul>
+      </nav>
+      <div class="container d-flex justify-content-center flex-row banner">
+        
+        <nav class="navbar navbar-expand-sm align-items-center">
+          <ul class="navbar-nav">
+            <a href="/admin/usuario/" th:href="@{/admin/usuario/}">
+              <i class="fas fa-user-circle"></i>
+              <li>Usuarios</li>
+            </a>
+            <a href="/admin/evento/" th:href="@{/admin/evento/}">
+                <i class="fas fa-calendar"></i>
+                <li>Eventos</li>
+            </a>
+            <a href="/admin/artista/" th:href="@{/admin/artista/}">
+              <i class="fas fa-music"></i>
+              <li>Artistas</li>
+            </a>
+            <a href="/admin/recinto/" th:href="@{/admin/recinto/}">
+              <i class="fas fa-map-marker-alt"></i>
+              <li>Recintos</li>
+            </a>
+            <a href="/admin/ciudad/" th:href="@{/admin/ciudad/}">
+              <i class="fas fa-city"></i>
+              <li>Ciudades</li>
+            </a>
+            <a href="/admin/entrada/" th:href="@{/admin/entrada/}">
+              <i class="fas fa-ticket-alt"></i>
+              <li>Entradas</li>
+            </a>
+            <a href="/admin/venta/" th:href="@{/admin/venta/}">
+              <i class="fas fa-shopping-cart"></i>
+              <li>Ventas</li>
+            </a>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+  </body>
+</html>

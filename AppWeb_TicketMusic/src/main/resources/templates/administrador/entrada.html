@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="description"
+      content="Ticket Music ofrece la posibilidad de comprar entradas para diferentes eventos
+     musicales como conciertos y festivales"
+    />
+    <title>TicketMusic - Administrar Entradas</title>
+    <link rel="shortcut icon" type="image/png" href="../static/img/favicon.png" th:href="@{/img/favicon.png}"/>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/3e3a2d3ce8.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../../static/css/estilos-privado.css" th:href="@{/css/estilos-privado.css}"/>
+    <style>
+        
+       
+    </style>
+  </head>
+  <body>
+    <!-- Cabecera -->
+    <header th:replace="~{fragmentos/encabezado-admin::encabezado-admin}">
+    </header>
+
+    <!-- Principal -->
+    <main class="container-fluid">
+      <form th:action="@{/logout}" method="POST" id="logoutForm"></form>
+      <div class="d-flex flex-column col-12">
+          <div class="col-12">
+              <h3 class="text-center display-4">Gestión Entradas</h3>
+          </div>
+          <div class="col-12">
+              
+					<form name='entrada' method='POST' th:action="@{/admin/entrada/editar/submit}"
+	              	th:object="${evento}" class="mb-5"> 
+	                <h4 class="negrita">Crear entradas nuevas</h4>
+	                <input th:if="${evento.id != 0}" type='hidden' id='id' />
+	                <div class="form-row">
+
+	                </div>
+	                <button type='submit' class='btn btn-success oculto' id='guardar'>Guardar</button>
+	                <button type="button" class="btn btn-danger oculto" id="descartar">Descartar</button>
+	            </form>
+              <table class="table table-striped" summary="Tabla que muestra los artistas guardados en la aplicación">
+                  <caption></caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" rowspan="2" class="align-middle">Id</th>
+
+                      <th scope="col" rowspan="2" class="align-middle">Evento</th>
+                      <th scope="col" colspan="6" class="text-center">Cantidad disponible</th>
+                      <th scope="col" class="text-center align-middle" rowspan="2">Cantidad total</th>
+                    </tr>
+                    <tr>
+                     
+                      
+                      <th scope="col" class="text-center">Entrada General</th>
+                      <th scope="col" class="text-center">Precio</th>
+                      <th scope="col" class="text-center">Entrada Vip</th>
+                      <th scope="col" class="text-center">Precio</th>
+                      <th scope="col" class="text-center">Entrada Premium</th>
+                      <th scope="col" class="text-center">Precio</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  	<tr th:each="evento : ${eventos}">
+                  		
+                 		<td th:text="${evento.id}"></td>
+                        <td th:text="${evento.nombre}">Mark</td>
+                        <td class="text-center"><span th:text="${entradaServicio.disponiblesGeneral(evento).size()}">Mark</span>/
+                        	<span th:text="${entradaServicio.totalTipo('Entrada General',evento).size()}"></span></td>
+                        <td class="text-center" th:text="${#numbers.formatCurrency(entradaServicio.precioTipo('Entrada General', evento))}">Mark</td>
+                        <td class="text-center"><span th:text="${entradaServicio.disponiblesVip(evento).size()}">Mark</span>/
+                        	<span th:text="${entradaServicio.totalTipo('Entrada VIP',evento).size()}"></span></td>
+                        <td class="text-center" th:text="${#numbers.formatCurrency(entradaServicio.precioTipo('Entrada VIP', evento))}">Mark</td>
+                        <td class="text-center"><span th:text="${entradaServicio.disponiblesPremium(evento).size()}">Mark</span>/
+                        	<span th:text="${entradaServicio.totalTipo('Entrada Premium',evento).size()}"></span></td>
+                        <td class="text-center" th:text="${#numbers.formatCurrency(entradaServicio.precioTipo('Entrada Premium', evento))}">Mark</td>
+                        <td class="text-center" th:text="${evento.entradas.size()}">Mark</td>
+                    	
+                    </tr>
+
+                  </tbody>
+                  <tfoot>
+
+                  </tfoot>
+                </table>
+                
+          </div>
+            
+      </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer th:replace="~{fragmentos/pie::pie}">
+    </footer>
+    <section th:replace="~{fragmentos/pie::copyright}"></section>
+    <script>
+		$(function(){
+
+			$("main form").hide();
+          $("body").on("click",".agregar",function (event) {
+            	$("#agregar").removeClass("agregar");
+                $(".oculto").css("visibility","visible");
+                $("main form").last().show(); 
+         	});
+
+         	$("body").on("click", "#guardar", function (event) {
+                $("#agregar").addClass("agregar");
+                $(".oculto").css("visibility", "hidden");
+                $("main form").hide();
+            });
+
+            $("body").on("click", "#limpiar", function (event) {
+		          $("main input").val("");
+                  
+				
+			});
+
+			$("body").on("click", "#descartar", function (event) {
+                $("main form").hide();
+                $(".oculto").css("visibility", "hidden");
+                $("#agregar").addClass("agregar");
+      });
+				
+		});
+	</script>
+
+  </body>
+</html>

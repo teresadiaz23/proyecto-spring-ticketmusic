@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Nunito+Sans&family=Roboto&display=swap');
+
+body{
+    background-color: #70c1b3;
+    background-color: rgba(112, 193, 179, 0.5);
+    font-family: 'Nunito Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Manrope','Roboto', arial,sans-serif;
+}
+
+/*Header*/
+.jumbotron{
+    border-radius: 0%;
+    background-image: url("../img/banner3.jpg");
+    background-position-y: -120px;
+}
+
+
+/*Nav*/
+
+.form-control{
+    border: 1px solid white;
+}
+.buscar{
+    color:white;
+}
+nav li{
+    font-size: 14pt;
+    
+}
+.logo{
+    width: 150px;;
+}
+ul div:first-child{
+    display: flex;
+    width: 300px;
+    align-content: flex-start;
+}
+
+ul div:first-child li{
+   margin-right: 10px;
+}
+.sesion{
+    width: 220px;
+    margin-right: 50px;
+    margin-left: 80px;    
+}
+
+/*Main*/
+
+
+main h2.izquierda{
+    margin-left: 100px;
+    margin-bottom: 20px;
+}
+main.inicio div div{
+    width: 200px;
+    margin-right: 50px;
+    margin-bottom: 25px;
+}
+
+main.inicio div div:hover p{
+    color: #17a2b8;
+}
+
+main p{
+    font-size: 14pt;
+    color: black;
+    margin-top: 10px;
+}
+main a:hover{
+    text-decoration: none;    
+}
+
+
+main.info img, main.inicio img{
+	margin-top: 5px;
+    width: 300px;
+    height: 190px;
+    
+    border-radius: 0.25em;
+    object-fit: cover;
+    
+}
+
+main.listado img{
+	margin-top: 5px;
+    width: 160px;
+    height: 98px;
+    border-radius: 0.25em;
+    object-fit: cover;
+}
+
+main.evento div div{
+    height: 110px;
+    background-color: honeydew;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+main.evento div{
+    margin-left: 40px;
+}
+
+main.evento p{
+    font-size: 12pt;
+    line-height: 1em;
+    
+}
+main.evento div div div{
+  height: 100%;
+  
+}
+main.evento div div .comprar{
+    padding-top: 35px;
+
+}
+
+main.evento input{
+    border: 1px solid grey;
+}
+main.evento .dia{
+    font-size: 20pt;
+    font-weight: bold;
+}
+main.evento .fechaEvento{
+    padding-top: 10px;
+}
+main.evento .fechaEvento p{
+    line-height: 0.5em;
+    
+}
+
+main.evento .col-2{
+    padding-top: 2px;
+    padding-right: 0px;
+}
+main.evento .nomArt{
+    font-size: 16pt;
+}
+
+main.evento form{
+    width: 300px;
+    margin-left: 40px;
+}
+
+main.evento .infoEvento img{
+    margin-top: 3px;
+}
+
+main.evento .infoEvento div{
+    height: 200px;
+    background-color: honeydew;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    
+}
+main.evento .tipoEntrada div p{
+    padding-top: 30px;
+}
+
+.fas{
+    line-height: 0.5;
+}
+
+
+.centrado{
+    text-align: center;
+}
+.negrita{
+    font-weight: bold;
+}
+
+.oculto{
+    visibility: hidden;
+}
+.errorOculto {
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    font-size: 80%;
+    margin-bottom: 10px;
+
+}
+
+
+
+footer{
+    height: 200px;
+    margin-top: 50px;
+    padding-top: 50px;
+    
+}
+footer h4{
+    padding-bottom: 20px;
+}
+
